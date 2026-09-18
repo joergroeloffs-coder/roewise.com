@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roewise</title>
+<style>
+  :root{
+    --bg:#0d1116; --card:#161b22; --border:#2a313c;
+    --text:#e6edf3; --muted:#93a3b3; --signal:#2fa4ff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex; flex-direction:column; align-items:center;
+    padding:48px 20px;
+  }
+  header{text-align:center; margin-bottom:40px}
+  h1{font-size:32px; margin:0 0 8px; letter-spacing:-0.5px}
+  p.sub{color:var(--muted); margin:0; font-size:15px}
+  .karten{
+    display:grid; gap:16px; width:100%; max-width:440px;
+    grid-template-columns:1fr;
+  }
+  a.karte{
+    display:block; background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:20px 22px; text-decoration:none; color:var(--text);
+  }
+  a.karte:hover{border-color:var(--signal)}
+  a.karte .ort{font-size:18px; font-weight:600; margin-bottom:4px}
+  a.karte .beschreibung{font-size:13px; color:var(--muted)}
+  footer{margin-top:48px; font-size:12px; color:var(--muted)}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Roewise</h1>
+    <p class="sub">Digitale Wasserentnahmestellen-Karten für Feuerwehren</p>
+  </header>
+  <div class="karten">
+    <a class="karte" href="https://foehr.roewise.com/nutzer/">
+      <div class="ort">Föhr</div>
+      <div class="beschreibung">Hydranten, Löschteiche &amp; Defibrillatoren</div>
+    </a>
+    <a class="karte" href="https://leck.roewise.com/nutzer/">
+      <div class="ort">Leck</div>
+      <div class="beschreibung">Hydranten &amp; Wasserentnahmestellen</div>
+    </a>
+  </div>
+  <footer>&copy; Roewise</footer>
+</body>
+</html>
