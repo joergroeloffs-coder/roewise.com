@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Einzelabo – Roewise</title>
+<style>
+  :root{
+    --bg:#0d1116; --card:#161b22; --border:#2a313c;
+    --text:#e6edf3; --muted:#93a3b3; --signal:#2fa4ff; --preis:#4fd18b;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex; flex-direction:column; align-items:center;
+    padding:48px 20px;
+  }
+  .zurueck{align-self:flex-start; max-width:440px; width:100%; margin:0 auto 24px; color:var(--muted); text-decoration:none; font-size:14px}
+  header{text-align:center; margin-bottom:8px; max-width:440px}
+  h1{font-size:26px; margin:0 0 8px; letter-spacing:-0.5px}
+  p.sub{color:var(--muted); margin:0; font-size:15px; line-height:1.5}
+
+  .preis-karte{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:28px 24px; width:100%; max-width:440px; margin-top:28px; text-align:center;
+  }
+  .preis{font-size:40px; font-weight:700; color:var(--preis); margin:0}
+  .preis span{font-size:15px; color:var(--muted); font-weight:400}
+  .leistungen{list-style:none; padding:0; margin:20px 0; text-align:left; font-size:14px; color:var(--muted)}
+  .leistungen li{padding:6px 0; padding-left:22px; position:relative}
+  .leistungen li::before{content:"✓"; position:absolute; left:0; color:var(--preis)}
+
+  .schritte{width:100%; max-width:440px; margin-top:28px}
+  .schritte h2{font-size:15px; margin:0 0 14px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+  .schritt{
+    display:flex; gap:14px; padding:14px 0; border-top:1px solid var(--border);
+  }
+  .schritt:first-of-type{border-top:none}
+  .nr{
+    flex:none; width:26px; height:26px; border-radius:50%; background:var(--card);
+    border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; color:var(--signal);
+  }
+  .schritt-text{font-size:14px; line-height:1.5}
+  .schritt-text b{color:var(--text)}
+
+  a.btn-zahlen{
+    display:block; margin-top:28px; width:100%; max-width:440px;
+    background:var(--signal); color:#0d1116; text-align:center; text-decoration:none;
+    padding:16px; border-radius:12px; font-weight:700; font-size:16px;
+  }
+  a.btn-mail{
+    display:block; margin-top:12px; width:100%; max-width:440px;
+    background:transparent; color:var(--text); text-align:center; text-decoration:none;
+    padding:14px; border-radius:12px; font-weight:600; font-size:14px;
+    border:1px solid var(--border);
+  }
+
+  footer{margin-top:48px; font-size:12px; color:var(--muted)}
+  footer a{color:var(--muted); margin:0 8px}
+</style>
+</head>
+<body>
+
+<a class="zurueck" href="/">&larr; Zurück</a>
+
+<header>
+  <h1>Einzelabo Föhr</h1>
+  <p class="sub">Für Privatpersonen, die die Wasserentnahmestellen-Karte für Föhr auf dem eigenen Handy nutzen möchten.</p>
+</header>
+
+<div class="preis-karte">
+  <p class="preis">12&nbsp;€ <span>/ Jahr</span></p>
+  <ul class="leistungen">
+    <li>Zugang zur Nutzerversion Föhr</li>
+    <li>Nutzbar auf bis zu 2 Geräten</li>
+    <li>Automatische Aktualisierung der Daten</li>
+    <li>Offline nutzbar (einmal geladen)</li>
+  </ul>
+</div>
+
+<div class="schritte">
+  <h2>So funktioniert's</h2>
+  <div class="schritt">
+    <div class="nr">1</div>
+    <div class="schritt-text"><b>Bezahlen</b> — 12 € per PayPal (Button unten)</div>
+  </div>
+  <div class="schritt">
+    <div class="nr">2</div>
+    <div class="schritt-text"><b>Zahlungsbeleg schicken</b> — kurze E-Mail mit Screenshot/Bestätigung an <b>wasserentnahme-foehr@web.de</b></div>
+  </div>
+  <div class="schritt">
+    <div class="nr">3</div>
+    <div class="schritt-text"><b>Persönlichen Link erhalten</b> — du bekommst innerhalb von 24 Std. deinen Zugangslink per E-Mail</div>
+  </div>
+</div>
+
+<!-- TODO: Sobald PayPal-Business-Konto und Abo-Button eingerichtet sind, echten Link hier eintragen -->
+<a class="btn-zahlen" href="#" title="PayPal-Link folgt in Kürze">Jetzt mit PayPal bezahlen</a>
+<a class="btn-mail" href="mailto:wasserentnahme-foehr@web.de?subject=Einzelabo%20F%C3%B6hr">Fragen? E-Mail schreiben</a>
+
+<footer>&copy; Roewise &nbsp;·&nbsp; <a href="/impressum.html">Impressum</a> &nbsp;·&nbsp; <a href="/datenschutz.html">Datenschutz</a></footer>
+</body>
+</html>
