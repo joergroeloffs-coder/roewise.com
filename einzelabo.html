@@ -96,8 +96,13 @@
   </div>
 </div>
 
-<!-- TODO: Sobald PayPal-Business-Konto und Abo-Button eingerichtet sind, echten Link hier eintragen -->
-<a class="btn-zahlen" href="#" title="PayPal-Link folgt in Kürze">Jetzt mit PayPal bezahlen</a>
+<div id="paypal-container-AYD7HPSDNGZLS" style="width:100%; max-width:440px; margin-top:28px"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAibq6e3EgDJlfwhqyR7eTO4Hnes3Jje2RiFaU1i-qMHS7ebBGKer8M8Mdu51y9l32MvvLEs3lt-n5oAQ&components=hosted-buttons&disable-funding=venmo&currency=EUR"></script>
+<script>
+  paypal.HostedButtons({
+    hostedButtonId: "AYD7HPSDNGZLS",
+  }).render("#paypal-container-AYD7HPSDNGZLS");
+</script>
 <a class="btn-mail" href="mailto:wasserentnahme-foehr@web.de?subject=Einzelabo%20F%C3%B6hr">Fragen? E-Mail schreiben</a>
 
 <footer>&copy; Roewise &nbsp;·&nbsp; <a href="/impressum.html">Impressum</a> &nbsp;·&nbsp; <a href="/datenschutz.html">Datenschutz</a></footer>
