@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Einzelabo – Roewise</title>
+<title>Löschbärt Föhr – Jahreszugang</title>
 <style>
   :root{
     --bg:#0d1116; --card:#161b22; --border:#2a313c;
@@ -27,6 +27,7 @@
   }
   .preis{font-size:40px; font-weight:700; color:var(--preis); margin:0}
   .preis span{font-size:15px; color:var(--muted); font-weight:400}
+  .preis-hinweis{font-size:13px; line-height:1.55; color:var(--muted); text-align:left; margin:12px 0 0}
   .leistungen{list-style:none; padding:0; margin:20px 0; text-align:left; font-size:14px; color:var(--muted)}
   .leistungen li{padding:6px 0; padding-left:22px; position:relative}
   .leistungen li::before{content:"✓"; position:absolute; left:0; color:var(--preis)}
@@ -59,6 +60,7 @@
 
   footer{margin-top:48px; font-size:12px; color:var(--muted)}
   footer a{color:var(--muted); margin:0 8px}
+  a:focus-visible{outline:3px solid var(--signal); outline-offset:2px}
 </style>
 </head>
 <body>
@@ -66,21 +68,29 @@
 <a class="zurueck" href="/">&larr; Zurück</a>
 
 <header>
-  <h1>Einzelabo Föhr</h1>
+  <h1>Löschbärt Föhr</h1>
   <p class="sub">Für Privatpersonen, die die Löschbärt-Karte für Föhr auf dem eigenen Handy nutzen möchten.</p>
   <p><a href="https://test.roewise.com/kuendigen.html" style="color:var(--signal)">Verträge hier kündigen</a> &nbsp;·&nbsp; <a href="https://test.roewise.com/widerruf.html" style="color:var(--signal)">Vertrag widerrufen</a></p>
 </header>
 
 <div class="preis-karte">
-  <p class="preis">12&nbsp;€ <span>pro Jahr</span></p>
+  <p class="preis">12,00&nbsp;€ <span>pro Jahr</span></p>
+  <p class="preis-hinweis">
+    Gesamtpreis 12,00 € für zwölf Monate. Gemäß § 19 UStG wird keine Umsatzsteuer
+    ausgewiesen. Weitere Preisbestandteile fallen nicht an. Zahlung im Voraus über PayPal.
+  </p>
   <ul class="leistungen">
-    <li>Zugang zur Nutzerversion Föhr</li>
+    <li>Zugang zur Nutzerversion Föhr für Wasserentnahmestellen und Defibrillatoren</li>
     <li>Nutzbar auf bis zu 2 Geräten</li>
     <li>Automatische Aktualisierung der Daten</li>
-    <li>Offline nutzbar (einmal geladen)</li>
-    <li>12 Monate Mindestlaufzeit, danach jederzeit kündbar</li>
-    <li>Vorausbezahlte Restzeit wird anteilig erstattet</li>
+    <li>Nach dem Laden auch ohne Internetverbindung nutzbar, solange der Zugang besteht</li>
+    <li>12 Monate Mindestlaufzeit, danach unbefristet und jederzeit kündbar</li>
+    <li>Vorausbezahlte Restzeit wird nach Ende der Mindestlaufzeit anteilig erstattet</li>
   </ul>
+  <p class="preis-hinweis">
+    Die Karte ist eine ergänzende Arbeitshilfe. Sie ersetzt keine amtliche Auskunft;
+    ob eine Entnahmestelle tatsächlich nutzbar ist, ist vor Ort zu prüfen.
+  </p>
 </div>
 
 <div class="schritte">
@@ -99,9 +109,14 @@
   </div>
 </div>
 
-<a class="btn-zahlen" href="https://test.roewise.com/registrieren.html">Zur sicheren Bestellung</a>
-<a class="btn-mail" href="mailto:wasserentnahme-foehr@web.de?subject=Einzelabo%20F%C3%B6hr">Fragen? E-Mail schreiben</a>
+<a class="btn-zahlen" href="https://test.roewise.com/registrieren.html">Zur Bestellung</a>
+<a class="btn-mail" href="mailto:wasserentnahme-foehr@web.de?subject=L%C3%B6schb%C3%A4rt%20F%C3%B6hr">Fragen? E-Mail schreiben</a>
 
-<footer>&copy; Roewise &nbsp;·&nbsp; <a href="https://test.roewise.com/kuendigen.html">Verträge hier kündigen</a> &nbsp;·&nbsp; <a href="https://test.roewise.com/widerruf.html">Vertrag widerrufen</a> &nbsp;·&nbsp; <a href="/impressum.html">Impressum</a> &nbsp;·&nbsp; <a href="/datenschutz.html">Datenschutz</a></footer>
+<footer>&copy; Roewise
+  &nbsp;·&nbsp; <a href="https://test.roewise.com/kuendigen.html">Verträge hier kündigen</a>
+  &nbsp;·&nbsp; <a href="https://test.roewise.com/widerruf.html">Vertrag widerrufen</a>
+  &nbsp;·&nbsp; <a href="https://test.roewise.com/agb.html">AGB</a>
+  &nbsp;·&nbsp; <a href="/impressum.html">Impressum</a>
+  &nbsp;·&nbsp; <a href="/datenschutz.html">Datenschutz</a></footer>
 </body>
 </html>
