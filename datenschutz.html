@@ -17,6 +17,7 @@
 <body>
 <p><a href="/">&larr; Zurück</a></p>
 <h1>Datenschutzerklärung</h1>
+<p>Stand: 21. September 2026</p>
 
 <h2>Verantwortlicher</h2>
 <p>
@@ -38,6 +39,30 @@ nächstgelegene Wasserentnahmestelle bzw. den nächsten Defibrillator anzuzeigen
 ausschließlich lokal im Browser verarbeitet und nicht an uns oder Dritte übertragen oder gespeichert.
 </p>
 
+<h2>Kundenkonto, Vertrag und Zugangsprüfung</h2>
+<p>
+Für Privatkunden werden E-Mail-Adresse, interne Kunden- und Vertragskennung, gebuchter Tarif,
+Vertragsstatus, Zahlungszeitpunkte sowie eine zufällige Gerätekennung verarbeitet. Konten und
+Vertragsdaten werden bei Supabase verwaltet; die serverseitige Zugangsprüfung läuft über Cloudflare.
+Rechtsgrundlage ist die Vertragsanbahnung und Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).
+</p>
+
+<h2>Zahlung und Vertrags-E-Mails</h2>
+<p>
+Zahlungen werden durch PayPal (Europe) S.à r.l. et Cie, S.C.A., Luxemburg, verarbeitet. Wir erhalten
+insbesondere Abo-/Zahlungskennung, Status und Betrag, aber keine vollständigen Karten- oder Bankdaten.
+Vertrags-, Kündigungs- und Widerrufsbestätigungen werden über Resend versandt. Rechtsgrundlage ist
+Art. 6 Abs. 1 lit. b DSGVO; gesetzlich erforderliche Rechnungsdaten werden nach Art. 6 Abs. 1 lit. c
+DSGVO verarbeitet.
+</p>
+
+<h2>Eingebundene Programmdateien</h2>
+<p>
+Die Supabase-Browserbibliothek wird über jsDelivr geladen. Dabei verarbeitet der CDN-Anbieter technisch
+notwendige Verbindungsdaten wie IP-Adresse und Zeitpunkt. Vor dem Livegang ist eine lokale Bereitstellung
+vorgesehen, um diesen zusätzlichen Empfänger zu vermeiden.
+</p>
+
 <h2>Lokale Speicherung (localStorage)</h2>
 <p>
 Die Anwendung speichert Einstellungen, Zugangsdaten und ggf. erfasste/bearbeitete Wasserentnahmestellen
@@ -47,10 +72,10 @@ du sendest sie aktiv über die integrierte Melde-/Erfassungsfunktion per E-Mail.
 
 <h2>Geräte-Zugangsprüfung (nur wenn aktiviert)</h2>
 <p>
-Bei einzelnen Versionen der Anwendung wird beim Öffnen eine zufällig erzeugte, nicht auf die Person
-rückführbare Geräte-Kennung zusammen mit der Zugangsnummer an einen Cloudflare Worker (Cloudflare, Inc.,
-101 Townsend St, San Francisco, CA 94107, USA) übermittelt, um die Anzahl der Geräte pro Zugang zu
-begrenzen. Es werden keine Namen, E-Mail-Adressen oder Standortdaten übertragen.
+Bei der Privatkundenversion wird beim Öffnen eine zufällig erzeugte Gerätekennung zusammen mit dem
+angemeldeten Konto an einen Cloudflare Worker (Cloudflare, Inc., USA) übermittelt, um Vertragsstatus
+und die vereinbarte Anzahl von höchstens zwei Geräten zu prüfen. Standortdaten werden dabei nicht
+übermittelt.
 </p>
 
 <h2>Kontaktaufnahme per E-Mail</h2>
@@ -62,6 +87,15 @@ Bearbeitung deiner Anfrage.
 
 <h2>Keine Analyse-/Tracking-Tools</h2>
 <p>Es werden keine Cookies zu Werbe- oder Analysezwecken und keine Tracking- oder Analysetools eingesetzt.</p>
+
+<h2>Drittlandübermittlungen und Speicherdauer</h2>
+<p>
+Soweit Dienstleister Daten außerhalb des Europäischen Wirtschaftsraums verarbeiten, geschieht dies nur
+auf Grundlage eines Angemessenheitsbeschlusses oder geeigneter Garantien wie EU-Standardvertragsklauseln.
+Vertrags-, Zahlungs- und Rechnungsdaten werden entsprechend gesetzlicher Aufbewahrungspflichten gespeichert.
+Geräte- und Kontodaten werden gelöscht oder anonymisiert, sobald sie für Vertrag, Sicherheit, Ansprüche
+oder gesetzliche Pflichten nicht mehr erforderlich sind.
+</p>
 
 <h2>Deine Rechte</h2>
 <p>
