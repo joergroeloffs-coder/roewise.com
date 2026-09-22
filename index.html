@@ -3,64 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Roewise</title>
+<title>Löschbärt</title>
+<meta name="description" content="Löschbärt findet Wasser, wenn's brennt: die digitale Karte für Wasserentnahmestellen und Defibrillatoren.">
+<link rel="icon" href="/img/loeschbaert-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0d1116; --card:#161b22; --border:#2a313c;
-    --text:#e6edf3; --muted:#93a3b3; --signal:#2fa4ff;
+    --bg:#0a1526; --bg2:#0e1d34; --card:#0f2038; --border:#1e3556;
+    --text:#f3f6fb; --muted:#9db0c9; --accent:#ff3b44; --accent-dark:#d81f2a;
+    --cream:#f4ecc9;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
-    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
-    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-    display:flex; flex-direction:column; align-items:center;
-    padding:48px 20px;
+    margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(255,59,68,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(255,255,255,0.04), transparent 55%);
   }
-  header{text-align:center; margin-bottom:40px}
-  h1{font-size:32px; margin:0 0 8px; letter-spacing:-0.5px}
-  p.sub{color:var(--muted); margin:0; font-size:15px}
-  .karten{
-    display:grid; gap:16px; width:100%; max-width:440px;
-    grid-template-columns:1fr;
+  h1,h2,h3{font-family:"Baloo 2",Inter,sans-serif; letter-spacing:0.2px; margin:0}
+  a{color:inherit}
+  a:focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:4px}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px}
+
+  /* Kopfzeile */
+  .kopf{display:flex; align-items:center; justify-content:space-between; padding:18px 0; gap:12px; flex-wrap:wrap}
+  .marke{display:flex; align-items:center; gap:10px; text-decoration:none}
+  .marke img{width:34px; height:34px; border-radius:9px; flex:none}
+  .marke .wortmarke{font-family:"Baloo 2",sans-serif; font-weight:800; font-size:19px; letter-spacing:0.3px}
+  .marke .wortmarke b{color:var(--accent)}
+  .kopf nav{display:flex; gap:16px; font-size:13px; color:var(--muted)}
+  .kopf nav a{text-decoration:underline; text-decoration-color:transparent; transition:text-decoration-color .15s}
+  .kopf nav a:hover{text-decoration-color:var(--muted)}
+
+  /* Hero */
+  .hero{display:grid; grid-template-columns:1.1fr 0.9fr; align-items:center; gap:32px; padding:32px 0 56px}
+  .hero h1{font-size:clamp(30px,4.4vw,50px); line-height:1.08; text-wrap:balance}
+  .hero h1 .rot{color:var(--accent)}
+  .hero p.claim{color:var(--muted); font-size:17px; margin-top:14px; max-width:46ch}
+  .hero .cta-zeile{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font:600 16px/1 Inter,sans-serif;
+    padding:15px 24px; border-radius:11px; text-decoration:none; min-height:48px;
+    border:1px solid transparent; cursor:pointer;
   }
-  a.karte{
-    display:block; background:var(--card); border:1px solid var(--border);
-    border-radius:12px; padding:20px 22px; text-decoration:none; color:var(--text);
+  .btn.primaer{background:var(--accent); color:#fff; box-shadow:0 10px 24px -10px rgba(255,59,68,0.55)}
+  .btn.primaer:hover{background:var(--accent-dark)}
+  .btn.sekundaer{background:transparent; border-color:var(--border); color:var(--text)}
+  .btn.sekundaer:hover{border-color:var(--muted)}
+  .hero .bild{position:relative; display:flex; justify-content:center}
+  .hero .bild img{width:100%; max-width:340px; filter:drop-shadow(0 24px 40px rgba(0,0,0,0.5))}
+  .hero .bild .glow{
+    position:absolute; inset:auto auto 0 50%; width:280px; height:60px; transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(255,59,68,0.35), transparent 70%); filter:blur(6px);
   }
-  a.karte:hover{border-color:var(--signal)}
-  a:focus-visible{outline:3px solid var(--signal); outline-offset:2px}
-  a.karte .ort{font-size:18px; font-weight:600; margin-bottom:4px}
-  a.karte .beschreibung{font-size:13px; color:var(--muted)}
-  a.karte .hinweis{font-size:12px; color:#e0a13a; margin-top:6px}
-  footer{margin-top:48px; font-size:12px; color:var(--muted)}
-  footer a{color:var(--muted); margin:0 8px}
+
+  /* Angebote */
+  .angebote{display:grid; gap:18px; padding:8px 0 54px; grid-template-columns:1fr}
+  @media(min-width:760px){ .angebote{grid-template-columns:1.2fr 0.8fr} }
+  .karte{
+    background:linear-gradient(180deg, var(--card), var(--bg2)); border:1px solid var(--border);
+    border-radius:16px; padding:26px 26px 24px; text-decoration:none; color:var(--text);
+    display:flex; flex-direction:column; transition:border-color .15s, transform .15s;
+  }
+  a.karte:hover{border-color:#3a5586; transform:translateY(-2px)}
+  .karte .abzeichen{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--cream);
+    background:rgba(244,236,201,0.1); border:1px solid rgba(244,236,201,0.25);
+    padding:4px 10px; border-radius:999px; width:fit-content; margin-bottom:14px;
+  }
+  .karte .ort{font-family:"Baloo 2",sans-serif; font-size:22px; font-weight:700; margin-bottom:6px}
+  .karte .beschreibung{font-size:14px; color:var(--muted); margin-bottom:14px}
+  .karte .preis{font-family:"Baloo 2",sans-serif; font-size:30px; font-weight:800; margin-bottom:4px}
+  .karte .preis small{font-family:Inter,sans-serif; font-size:14px; font-weight:500; color:var(--muted)}
+  .karte .hinweis{font-size:12.5px; color:var(--muted); margin-top:auto; padding-top:14px; border-top:1px solid var(--border); line-height:1.5}
+  .karte.gemeinde{justify-content:center}
+  .karte.gemeinde .ort{font-size:19px}
+
+  footer{border-top:1px solid var(--border); padding:22px 0 40px; margin-top:10px}
+  footer .zeile{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--muted); align-items:center}
+  footer a{color:var(--muted); text-decoration:underline}
+  footer a:hover{color:var(--text)}
+  footer .trenner{opacity:0.5}
+
+  @media(max-width:759px){
+    .hero{grid-template-columns:1fr; text-align:center; padding-top:12px}
+    .hero p.claim{margin-left:auto; margin-right:auto}
+    .hero .cta-zeile{justify-content:center}
+    .hero .bild{order:-1}
+    .hero .bild img{max-width:220px}
+    .kopf nav{width:100%; justify-content:center; order:2}
+  }
 </style>
 </head>
 <body>
-  <header>
-    <h1>Roewise</h1>
-    <p class="sub">Löschbärt – findet Wasser, wenn's brennt</p>
-    <p><a href="https://test.roewise.com/kuendigen.html">Verträge hier kündigen</a> &nbsp;·&nbsp; <a href="https://test.roewise.com/widerruf.html">Vertrag widerrufen</a></p>
-  </header>
-  <div class="karten">
-    <a class="karte" href="/einzelabo.html">
-      <div class="ort">Löschbärt Föhr</div>
-      <div class="beschreibung">Wasserentnahmestellen &amp; Defibrillatoren · bis zu 2 Geräte</div>
-      <div class="hinweis">Gesamtpreis 12,00 € pro Jahr (keine Umsatzsteuer, § 19 UStG) · 12 Monate Mindestlaufzeit · danach Verlängerung um je 12 Monate, kündbar mit 6 Wochen Frist zum Laufzeitende</div>
-    </a>
+  <div class="wrap">
+    <header class="kopf">
+      <a class="marke" href="/">
+        <img src="/img/loeschbaert-icon.webp" alt="">
+        <span class="wortmarke">LÖSCH<b>BÄRT</b></span>
+      </a>
+      <nav aria-label="Vertrag verwalten">
+        <a href="https://test.roewise.com/kuendigen.html">Verträge kündigen</a>
+        <a href="https://test.roewise.com/widerruf.html">Widerrufen</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Findet Wasser,<br>wenn<span class="rot">'</span>s <span class="rot">brennt</span>.</h1>
+        <p class="claim">Löschbärt zeigt dir auf Föhr in Sekunden den nächsten Hydranten, die nächste Saugstelle oder den nächsten Defibrillator – auch offline, direkt auf dem Handy.</p>
+        <div class="cta-zeile">
+          <a class="btn primaer" href="/einzelabo.html">Jetzt für Föhr bestellen</a>
+          <a class="btn sekundaer" href="#angebote">Alle Angebote ansehen</a>
+        </div>
+      </div>
+      <div class="bild">
+        <div class="glow"></div>
+        <img src="/img/loeschbaert-daumen.webp" alt="Löschbärt, das Maskottchen: ein bärtiger Feuerwehrmann, der mit dem Handy in der Hand den Daumen hebt">
+      </div>
+    </section>
+
+    <section class="angebote" id="angebote">
+      <a class="karte" href="/einzelabo.html">
+        <span class="abzeichen">Für Privatpersonen</span>
+        <div class="ort">Löschbärt Föhr</div>
+        <div class="beschreibung">Wasserentnahmestellen &amp; Defibrillatoren auf bis zu 2 Geräten</div>
+        <div class="preis">12,00 € <small>pro Jahr</small></div>
+        <div class="hinweis">Keine Umsatzsteuer (§ 19 UStG) · 12 Monate Mindestlaufzeit, danach Verlängerung um je 12 Monate · kündbar mit 6 Wochen Frist zum Laufzeitende</div>
+      </a>
+      <a class="karte gemeinde" href="mailto:wasserentnahme-foehr@web.de?subject=Anfrage%20Gemeindeversion">
+        <span class="abzeichen">Für Kommunen &amp; Feuerwehren</span>
+        <div class="ort">Gemeinde- und Feuerwehrversion</div>
+        <div class="beschreibung">Individuelle Version für eure Gemeinde – auf Anfrage</div>
+        <div class="hinweis">Kein öffentlicher Verkauf · Angebot nach Abstimmung</div>
+      </a>
+    </section>
   </div>
-  <div class="karten" style="margin-top:8px">
-    <a class="karte" href="mailto:wasserentnahme-foehr@web.de?subject=Anfrage%20Gemeindeversion" style="border-color:var(--signal)">
-      <div class="ort">Gemeinde- und Feuerwehrversion</div>
-      <div class="beschreibung">Individuelle Version für Kommunen und Feuerwehren anfragen</div>
-      <div class="hinweis">Kein öffentlicher Verkauf · Angebot nach Abstimmung</div>
-    </a>
-  </div>
-  <footer>&copy; Roewise
-    &nbsp;·&nbsp; <a href="https://test.roewise.com/kuendigen.html">Verträge hier kündigen</a>
-    &nbsp;·&nbsp; <a href="https://test.roewise.com/widerruf.html">Vertrag widerrufen</a>
-    &nbsp;·&nbsp; <a href="https://test.roewise.com/agb.html">AGB</a>
-    &nbsp;·&nbsp; <a href="/impressum.html">Impressum</a>
-    &nbsp;·&nbsp; <a href="/datenschutz.html">Datenschutz</a></footer>
+
+  <footer>
+    <div class="wrap zeile">
+      <span>&copy; Löschbärt / Roewise</span>
+      <span class="trenner">·</span>
+      <a href="https://test.roewise.com/kuendigen.html">Verträge hier kündigen</a>
+      <span class="trenner">·</span>
+      <a href="https://test.roewise.com/widerruf.html">Vertrag widerrufen</a>
+      <span class="trenner">·</span>
+      <a href="https://test.roewise.com/agb.html">AGB</a>
+      <span class="trenner">·</span>
+      <a href="/impressum.html">Impressum</a>
+      <span class="trenner">·</span>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </div>
+  </footer>
 </body>
 </html>
