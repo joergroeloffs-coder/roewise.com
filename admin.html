@@ -88,7 +88,7 @@
       <thead>
         <tr>
           <th>E-Mail</th><th>Tarif</th><th>Status</th><th>Beginn</th>
-          <th>Bezahlt bis</th><th>Notiz</th><th>Aktionen</th>
+          <th>Bezahlt bis</th><th>Letzte Zahlung</th><th>Notiz</th><th>Aktionen</th>
         </tr>
       </thead>
       <tbody id="kunden-tabelle"></tbody>
@@ -120,6 +120,25 @@
     erstattet: ["Erstattet", "fehler"], widerrufen: ["Widerrufen", "fehler"],
     manuell_gesperrt: ["Manuell gesperrt", "fehler"],
   };
+
+  const ZAHLUNG_STATUS_TEXT = {
+    erfolgreich: ["Bezahlt", "aktiv"],
+    fehlgeschlagen: ["Fehlgeschlagen", "fehler"],
+    erstattet: ["Erstattet", "fehler"],
+  };
+
+  function letzteZahlungHtml(k){
+    const zahlungen = k.payments || [];
+    if(!zahlungen.length) return "–";
+    const letzte = zahlungen[0];
+    const [text, art] = ZAHLUNG_STATUS_TEXT[letzte.status] || [letzte.status, "warnung"];
+    const betrag = (letzte.betrag_cent / 100).toFixed(2).replace(".", ",") + " €";
+    const verlauf = zahlungen
+      .map(z => `${formatDatum(z.zeitpunkt)}: ${(ZAHLUNG_STATUS_TEXT[z.status] || [z.status])[0]} (${(z.betrag_cent / 100).toFixed(2).replace(".", ",")} €)`)
+      .join("\n");
+    return `<span class="badge ${art}" title="${escapeHtml(verlauf)}">${escapeHtml(text)}</span> ${betrag}` +
+      (zahlungen.length > 1 ? ` <span style="font-size:11px;color:var(--muted)">(+${zahlungen.length - 1} weitere)</span>` : "");
+  }
 
   const VERARBEITUNG_TEXT = {
     eingegangen: "Eingegangen, wird noch verarbeitet",
@@ -217,6 +236,7 @@
           <td><span class="badge ${art}">${escapeHtml(text)}</span>${k.manuell_gesperrt ? ' <span class="badge fehler">manuell gesperrt</span>' : ""}</td>
           <td>${formatDatum(k.beginn)}</td>
           <td>${formatDatum(k.bezahlt_bis)}</td>
+          <td>${letzteZahlungHtml(k)}</td>
           <td>${escapeHtml(k.notiz)}</td>
           <td>
             ${k.manuell_gesperrt
@@ -307,14 +327,23 @@
   }
 
   document.getElementById("csv-vertraege-btn").addEventListener("click", () => {
-    const zeilen = AKTUELLE_KUNDEN.map(k => [
-      k.vertragsnummer || "-",
-      k.customer_profiles?.email || "-",
-      formatDatum(k.erstellt_am),
-      (STATUS_TEXT[k.status] || [k.status])[0],
-      formatDatum(k.bezahlt_bis),
-    ]);
-    csvHerunterladen("Vertraege.csv", ["Vertragsnummer", "E-Mail", "Erstellt", "Status", "Bezahlt bis"], zeilen);
+    const zeilen = AKTUELLE_KUNDEN.map(k => {
+      const letzte = (k.payments || [])[0];
+      return [
+        k.vertragsnummer || "-",
+        k.customer_profiles?.email || "-",
+        formatDatum(k.erstellt_am),
+        (STATUS_TEXT[k.status] || [k.status])[0],
+        formatDatum(k.bezahlt_bis),
+        letzte ? (ZAHLUNG_STATUS_TEXT[letzte.status] || [letzte.status])[0] : "-",
+        letzte ? (letzte.betrag_cent / 100).toFixed(2).replace(".", ",") : "-",
+      ];
+    });
+    csvHerunterladen(
+      "Vertraege.csv",
+      ["Vertragsnummer", "E-Mail", "Erstellt", "Status", "Bezahlt bis", "Letzte Zahlung", "Betrag"],
+      zeilen,
+    );
   });
 
   document.getElementById("csv-erklaerungen-btn").addEventListener("click", () => {
