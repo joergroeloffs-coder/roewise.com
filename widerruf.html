@@ -38,6 +38,18 @@
       h2 {
         margin-top: 32px;
       }
+      /* Löschbärt-Maskottchen links neben dem Text - immer sichtbar, wird
+         auf schmaleren Bildschirmen nur kleiner, statt zu verschwinden.
+         Rein dekorativ, kein Einfluss auf Funktion. */
+      .maskottchen {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: max(4px, calc(50% - 684px));
+        width: clamp(56px, 20vw, 300px);
+        pointer-events: none;
+        filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5));
+      }
       .muted {
         color: var(--muted);
       }
@@ -115,6 +127,12 @@
     </style>
   </head>
   <body>
+    <img
+      class="maskottchen"
+      src="img/loeschbaert-nachdenklich.webp"
+      alt=""
+      aria-hidden="true"
+    />
     <main>
       <p><a href="/registrieren.html">← Zurück</a></p>
       <h1>Widerrufsbelehrung</h1>
