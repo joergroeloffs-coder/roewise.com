@@ -195,27 +195,22 @@
         outline: 3px solid var(--accent);
         outline-offset: 2px;
       }
-      /* Löschbärt-Maskottchen links/rechts neben der Bestellung - nur wenn
-         genug Platz ist, damit auf schmaleren Bildschirmen nichts überlappt.
-         Rein dekorativ, kein Einfluss auf Formular/Funktion. */
+      /* Löschbärt-Maskottchen links/rechts neben der Bestellung - immer
+         sichtbar, werden auf schmaleren Bildschirmen nur kleiner statt zu
+         verschwinden. Rein dekorativ, kein Einfluss auf Formular/Funktion. */
       .maskottchen {
-        display: none;
+        display: block;
         position: fixed;
         bottom: 0;
-        width: 300px;
+        width: clamp(48px, 16vw, 300px);
         pointer-events: none;
         filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5));
       }
       .maskottchen.links {
-        left: max(24px, calc(50% - 660px));
+        left: max(4px, calc(50% - 660px));
       }
       .maskottchen.rechts {
-        right: max(24px, calc(50% - 660px));
-      }
-      @media (min-width: 1440px) {
-        .maskottchen {
-          display: block;
-        }
+        right: max(4px, calc(50% - 660px));
       }
     </style>
   </head>
