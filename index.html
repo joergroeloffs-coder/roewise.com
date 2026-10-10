@@ -61,6 +61,12 @@
     background:radial-gradient(ellipse at center, rgba(255,59,68,0.35), transparent 70%); filter:blur(6px);
   }
 
+  .hero .bild-link{display:flex; flex-direction:column; align-items:center; gap:10px; text-decoration:none; position:relative}
+  .hero .bild-link:hover img{transform:translateY(-3px)}
+  .hero .bild-link img{transition:transform .15s}
+  .hero .bild-hinweis{font-size:13.5px; color:var(--cream); background:rgba(244,236,201,0.1); border:1px solid rgba(244,236,201,0.25); padding:6px 14px; border-radius:999px; text-align:center}
+  .hero .bild-link:hover .bild-hinweis{border-color:var(--cream)}
+
   /* Angebote */
   .angebote{display:grid; gap:18px; padding:8px 0 54px; grid-template-columns:1fr}
   @media(min-width:760px){ .angebote{grid-template-columns:1.2fr 0.8fr} }
@@ -121,7 +127,10 @@
       </div>
       <div class="bild">
         <div class="glow"></div>
-        <img src="/img/loeschbaert-daumen.webp" alt="Löschbärt, das Maskottchen: ein bärtiger Feuerwehrmann, der mit dem Handy in der Hand den Daumen hebt">
+        <a href="/rundgang.html" class="bild-link" aria-label="Rundgang durch die Löschbärt-App ansehen">
+          <img src="/img/loeschbaert-daumen.webp" alt="Löschbärt, das Maskottchen: ein bärtiger Feuerwehrmann, der mit dem Handy in der Hand den Daumen hebt">
+          <span class="bild-hinweis">Tippe auf den Löschbärt: Rundgang durch die App →</span>
+        </a>
       </div>
     </section>
 
