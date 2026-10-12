@@ -73,11 +73,18 @@
   </p>
   <div style="display:flex; flex-wrap:wrap; gap:10px; max-width:640px; margin-bottom:12px">
     <input type="email" id="ma-email" placeholder="E-Mail-Adresse" style="flex:2; min-width:220px">
-    <input type="text" id="ma-tarif" placeholder="Tarif-Code (z.B. foehr-jahr)" style="flex:1; min-width:160px">
+    <select id="ma-tarif-wahl" style="flex:1; min-width:200px" title="Tarif">
+      <option value="">Tarif wird geladen …</option>
+    </select>
+    <input type="text" id="ma-tarif" placeholder="Tarif-Code (z.B. foehr-jahr)" style="flex:1; min-width:160px" hidden>
   </div>
   <div style="display:flex; flex-wrap:wrap; gap:10px; max-width:640px; margin-bottom:12px">
     <input type="text" id="ma-referenz" placeholder="Zahlungsreferenz / Notiz (z.B. Rechnungsnummer)" style="flex:2; min-width:220px">
     <input type="date" id="ma-beginn" style="flex:1; min-width:160px" title="Leistungsbeginn (leer = sofort)">
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px; max-width:640px; margin-bottom:12px; align-items:center">
+    <input type="number" id="ma-geraete" min="1" max="500" step="1" placeholder="Max. Geräte (leer = laut Tarif)" style="flex:1; min-width:200px">
+    <span id="ma-tarif-info" style="flex:2; min-width:200px; font-size:13px; color:var(--muted)"></span>
   </div>
   <button id="ma-anlegen-btn">Zugang anlegen</button>
   <p id="ma-status" style="font-size:13px; margin-top:8px"></p>
@@ -87,7 +94,7 @@
     <table>
       <thead>
         <tr>
-          <th>E-Mail</th><th>Tarif</th><th>Status</th><th>Beginn</th>
+          <th>E-Mail</th><th>Tarif</th><th>Geräte</th><th>Status</th><th>Beginn</th>
           <th>Bezahlt bis</th><th>Letzte Zahlung</th><th>Notiz</th><th>Aktionen</th>
         </tr>
       </thead>
@@ -204,6 +211,7 @@
   });
 
   async function ladeAlles(){
+    if(!TARIFE.length) ladeTarife();
     const uebersichtRes = await adminFetch("/api/admin/uebersicht");
     const uebersicht = await uebersichtRes.json();
 
@@ -233,6 +241,7 @@
         <tr>
           <td>${escapeHtml(k.customer_profiles?.email) || "–"}</td>
           <td>${escapeHtml(k.tariffs?.bezeichnung) || "–"}</td>
+          <td>${k.max_geraete_override ?? k.tariffs?.max_geraete ?? 2}${k.max_geraete_override ? " (individuell)" : ""}</td>
           <td><span class="badge ${art}">${escapeHtml(text)}</span>${k.manuell_gesperrt ? ' <span class="badge fehler">manuell gesperrt</span>' : ""}</td>
           <td>${formatDatum(k.beginn)}</td>
           <td>${formatDatum(k.bezahlt_bis)}</td>
@@ -365,7 +374,12 @@
     const aktuellesBezahltBis = kunde.bezahlt_bis ? kunde.bezahlt_bis.slice(0, 10) : "";
     const neuesDatum = prompt("Bezahlt bis (JJJJ-MM-TT, leer lassen = unverändert):", aktuellesBezahltBis);
     if(neuesDatum === null) return;
-    const body = { subscription_id: id, notiz: neueNotiz };
+    const aktuellesLimit = kunde.max_geraete_override ?? "";
+    const neuesLimit = prompt(
+      "Max. Geräte für diesen Vertrag (Zahl 1-500; leer lassen = Wert des Tarifs, aktuell " +
+      (kunde.tariffs?.max_geraete ?? 2) + "):", String(aktuellesLimit));
+    if(neuesLimit === null) return;
+    const body = { subscription_id: id, notiz: neueNotiz, max_geraete: neuesLimit.trim() };
     if(neuesDatum.trim()) body.bezahlt_bis = neuesDatum.trim();
     const res = await adminFetch("/api/admin/bearbeiten", { method: "POST", body: JSON.stringify(body) });
     if(!res.ok){
@@ -376,15 +390,40 @@
     ladeAlles();
   }
 
+  var TARIFE = [];
+  async function ladeTarife(){
+    const wahl = document.getElementById("ma-tarif-wahl");
+    try {
+      const res = await adminFetch("/api/admin/tarife");
+      if(!res.ok) throw new Error(String(res.status));
+      TARIFE = await res.json();
+      wahl.innerHTML = '<option value="">Tarif wählen …</option>' + TARIFE.map(t =>
+        `<option value="${escapeHtml(t.code)}">${escapeHtml(t.bezeichnung)} (${escapeHtml(t.code)})</option>`
+      ).join("");
+    } catch(e){
+      // Rueckfall auf freie Eingabe, falls die Tarifliste nicht geladen werden kann.
+      wahl.hidden = true;
+      document.getElementById("ma-tarif").hidden = false;
+    }
+  }
+  document.getElementById("ma-tarif-wahl").addEventListener("change", (ev) => {
+    const t = TARIFE.find(x => x.code === ev.target.value);
+    document.getElementById("ma-tarif-info").textContent = t
+      ? `Laut Tarif: ${t.max_geraete ?? 2} Geräte, ${(t.preis_cent / 100).toFixed(2).replace(".", ",")} €`
+      : "";
+  });
+
   document.getElementById("ma-anlegen-btn").addEventListener("click", async () => {
     const email = document.getElementById("ma-email").value.trim();
-    const tariff_code = document.getElementById("ma-tarif").value.trim();
+    const wahl = document.getElementById("ma-tarif-wahl");
+    const tariff_code = (wahl.hidden ? document.getElementById("ma-tarif").value : wahl.value).trim();
+    const geraeteFeld = document.getElementById("ma-geraete").value.trim();
     const zahlungsreferenz = document.getElementById("ma-referenz").value.trim();
     const beginnFeld = document.getElementById("ma-beginn").value;
     const statusEl = document.getElementById("ma-status");
     if(!email || !tariff_code){
       statusEl.style.color = "var(--fehler)";
-      statusEl.textContent = "E-Mail-Adresse und Tarif-Code sind nötig.";
+      statusEl.textContent = "E-Mail-Adresse und Tarif sind nötig.";
       return;
     }
     statusEl.style.color = "var(--muted)";
@@ -393,6 +432,7 @@
       method: "POST",
       body: JSON.stringify({
         email, tariff_code, zahlungsreferenz,
+        max_geraete: geraeteFeld ? Number(geraeteFeld) : undefined,
         leistungsbeginn: beginnFeld ? new Date(beginnFeld).toISOString() : undefined,
       }),
     });
@@ -402,6 +442,9 @@
       statusEl.textContent = `Angelegt: ${daten.vertragsnummer} (Leistungsbeginn ${formatDatum(daten.leistungsbeginn_am)})`;
       document.getElementById("ma-email").value = "";
       document.getElementById("ma-tarif").value = "";
+      document.getElementById("ma-tarif-wahl").value = "";
+      document.getElementById("ma-geraete").value = "";
+      document.getElementById("ma-tarif-info").textContent = "";
       document.getElementById("ma-referenz").value = "";
       document.getElementById("ma-beginn").value = "";
       ladeAlles();
