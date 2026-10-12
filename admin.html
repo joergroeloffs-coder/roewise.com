@@ -326,9 +326,23 @@
       `Zum Bestätigen "LÖSCHEN" eingeben:`
     );
     if(eingabe !== "LÖSCHEN") return;
-    const res = await adminFetch("/api/admin/loeschen", { method: "POST", body: JSON.stringify({ subscription_id: subscriptionId }) });
+    let res = await adminFetch("/api/admin/loeschen", { method: "POST", body: JSON.stringify({ subscription_id: subscriptionId }) });
+    if(res.status === 409){
+      const daten = await res.json().catch(() => ({}));
+      if(daten.fehler === "paypal_abo_noch_aktiv"){
+        alert("Das PayPal-Abo läuft noch und würde weiter abbuchen. Bitte zuerst den Vertrag kündigen oder widerrufen.");
+        return;
+      }
+      if(daten.fehler === "rechnungen_vorhanden"){
+        if(!confirm(
+          "Zu diesem Vertrag gibt es " + (daten.anzahl || "") + " Rechnung(en). Rechnungen müssen steuerlich 8 Jahre " +
+          "aufbewahrt werden und gehen beim Löschen verloren.\n\nNur für Testverträge löschen. Trotzdem löschen?"
+        )) return;
+        res = await adminFetch("/api/admin/loeschen", { method: "POST", body: JSON.stringify({ subscription_id: subscriptionId, rechnungen_loeschen: true }) });
+      }
+    }
     if(!res.ok){
-      const daten = await res.json();
+      const daten = await res.json().catch(() => ({}));
       alert("Fehler: " + (daten.fehler || res.status));
       return;
     }
