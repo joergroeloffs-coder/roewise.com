@@ -89,6 +89,18 @@
   <button id="ma-anlegen-btn">Zugang anlegen</button>
   <p id="ma-status" style="font-size:13px; margin-top:8px"></p>
 
+  <h2>Offline-Gnadenfrist</h2>
+  <p style="font-size:13px; color:var(--muted); margin:0 0 12px; max-width:560px">
+    Damit die App bei fehlendem Netz (Funkloch) weiterläuft, gibt der Server nach
+    jeder erfolgreichen Prüfung eine signierte Freigabe aus (72 Stunden, an das
+    Gerät gebunden). Dafür braucht die App den öffentlichen Schlüssel. Der
+    Button erzeugt ihn beim ersten Mal und zeigt ihn danach wieder an. Den
+    Text darunter bitte vollständig kopieren und weitergeben; er ist nicht geheim.
+  </p>
+  <button id="gn-btn">Schlüssel erzeugen / anzeigen</button>
+  <textarea id="gn-schluessel" readonly rows="3" style="display:block; width:100%; max-width:560px; margin-top:10px; font:12px monospace" placeholder="Hier erscheint der öffentliche Schlüssel"></textarea>
+  <p id="gn-status" style="font-size:13px; margin-top:8px"></p>
+
   <h2>Kunden <button class="klein" id="csv-vertraege-btn" style="margin-left:8px">Als CSV (Excel)</button></h2>
   <div id="tabelle-wrapper">
     <table>
@@ -403,6 +415,22 @@
     }
     ladeAlles();
   }
+
+  document.getElementById("gn-btn").addEventListener("click", async () => {
+    const statusEl = document.getElementById("gn-status");
+    statusEl.style.color = "var(--muted)";
+    statusEl.textContent = "Wird geprüft …";
+    const res = await adminFetch("/api/admin/gnadenschluessel", { method: "POST", body: JSON.stringify({}) });
+    const daten = await res.json().catch(() => ({}));
+    if(res.ok){
+      document.getElementById("gn-schluessel").value = JSON.stringify(daten);
+      statusEl.style.color = "var(--preis)";
+      statusEl.textContent = "Fertig. Der Schlüssel steht im Feld oben.";
+    } else {
+      statusEl.style.color = "var(--fehler)";
+      statusEl.textContent = "Fehler: " + (daten.fehler || res.status);
+    }
+  });
 
   var TARIFE = [];
   async function ladeTarife(){
