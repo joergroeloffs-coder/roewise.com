@@ -24,6 +24,9 @@
   .zeile.summe{font-weight:700;font-size:16px;border-bottom:none;border-top:2px solid #111;margin-top:6px;padding-top:10px}
   .hinweis{font-size:12px;color:#777;margin-top:24px}
   #status{font-size:14px;color:var(--muted)}
+  .fuss{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:8px}
+  .fuss .hinweis{margin:0 0 8px}
+  .fuss img{height:170px;width:auto;flex:none}
 
   @media print{
     .werkzeuge{display:none}
@@ -64,9 +67,12 @@
   <div class="zeile"><span id="r-tarif">Löschbärt – Abo</span><span id="r-betrag"></span></div>
   <div class="zeile summe"><span>Gesamt</span><span id="r-gesamt"></span></div>
 
-  <p class="hinweis" id="r-ust-hinweis">
-    Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen.
-  </p>
+  <div class="fuss">
+    <p class="hinweis" id="r-ust-hinweis">
+      Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen.
+    </p>
+    <img src="/img/loeschbaert-figur.webp" alt="Löschbärt zeigt auf dem Handy: bezahlt" width="81" height="170">
+  </div>
 </div>
 
 <script src="/vendor/supabase.js"></script>
