@@ -446,10 +446,10 @@
           document.getElementById("sales-notice").textContent =
             catalog.verkaufAktiv && tariff?.kaufbar
               ? "Der Kauf ist freigeschaltet. Vor dem Bezahlen werden alle Vertragsangaben nochmals angezeigt."
-              : "Der Verkauf ist noch nicht freigeschaltet. Es kann derzeit keine Zahlung ausgelöst werden.";
+              : "Neubestellungen sind derzeit nicht möglich. Es kann keine Zahlung ausgelöst werden.";
         } catch {
           document.getElementById("sales-notice").textContent =
-            "Der Verkauf ist derzeit nicht verfügbar.";
+            "Neubestellungen sind derzeit nicht möglich.";
         }
       }
       document.getElementById("login").onclick = async () => {
@@ -479,7 +479,7 @@
         if (!catalog?.verkaufAktiv || !tariff?.kaufbar) {
           return status(
             "order-status",
-            "Der Verkauf ist derzeit nicht freigeschaltet.",
+            "Neubestellungen sind derzeit nicht möglich.",
             "error",
           );
         }
