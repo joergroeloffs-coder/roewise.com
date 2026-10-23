@@ -244,11 +244,11 @@
     const kundenRes = await adminFetch("/api/admin/kunden");
     const kunden = await kundenRes.json();
     AKTUELLE_KUNDEN = kunden;
-    // Angemeldete Geraete eines Vertrags als Text (Tooltip): Name und letzte Aktivitaet
-    function geraeteListe(k){
+    // Angemeldete Geraete eines Vertrags: je Zeile Name, letzte Aktivitaet und ein Knopf zum Entfernen
+    function geraeteZeilen(k){
       const g = k.customer_profiles?.devices || [];
-      if(!g.length) return "Noch kein Gerät angemeldet";
-      return g.map(d => (d.geraet_name || "Unbekanntes Gerät") + " – zuletzt aktiv " + formatDatum(d.zuletzt_aktiv)).join("\n");
+      if(!g.length) return "";
+      return g.map(d => `<div style="font-size:12px;color:var(--muted);margin-top:3px">${escapeHtml(d.geraet_name || "Unbekanntes Gerät")}, ${formatDatum(d.zuletzt_aktiv)} <button class="klein gefahr" title="Dieses Gerät entfernen" onclick="geraetEntfernen('${escapeHtml(d.id)}')">×</button></div>`).join("");
     }
     document.getElementById("kunden-tabelle").innerHTML = kunden.map(k => {
       const [text, art] = STATUS_TEXT[k.status] || [k.status, "warnung"];
@@ -259,7 +259,7 @@
         <tr>
           <td>${escapeHtml(k.customer_profiles?.email) || "–"}</td>
           <td>${escapeHtml(k.tariffs?.bezeichnung) || "–"}</td>
-          <td title="${escapeHtml(geraeteListe(k))}">${(k.customer_profiles?.devices || []).length} von ${k.max_geraete_override ?? k.tariffs?.max_geraete ?? 2}${k.max_geraete_override ? " (individuell)" : ""}</td>
+          <td>${(k.customer_profiles?.devices || []).length} von ${k.max_geraete_override ?? k.tariffs?.max_geraete ?? 2}${k.max_geraete_override ? " (individuell)" : ""}${geraeteZeilen(k)}</td>
           <td><span class="badge ${art}">${escapeHtml(text)}</span>${k.manuell_gesperrt ? ' <span class="badge fehler">manuell gesperrt</span>' : ""}</td>
           <td>${formatDatum(k.beginn)}</td>
           <td>${formatDatum(k.bezahlt_bis)}</td>
@@ -300,6 +300,13 @@
 
   let AKTUELLE_KUNDEN = [];
   let AKTUELLE_ERKLAERUNGEN = [];
+
+  async function geraetEntfernen(deviceId){
+    if(!confirm("Dieses Gerät entfernen? Der Platz ist danach frei, das Gerät muss sich neu anmelden.")) return;
+    const res = await adminFetch("/api/admin/geraet-entfernen", { method: "POST", body: JSON.stringify({ device_id: deviceId }) });
+    if(!res.ok){ alert("Das Gerät konnte nicht entfernt werden."); return; }
+    ladeAlles();
+  }
 
   async function geraeteZuruecksetzen(subscriptionId){
     const kunde = AKTUELLE_KUNDEN.find(k => k.id === subscriptionId);
